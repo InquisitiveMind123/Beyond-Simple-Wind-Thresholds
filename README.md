@@ -1,6 +1,6 @@
 # Beyond Simple Wind Thresholds: A Practical Protection Algorithm for Awnings and Other Wind-Sensitive Systems
 
-![Beyond Simple Wind Thresholds --- awning and
+![Beyond Simple Wind Thresholds — awning and
 anemometer](images/wind-protection-awning.jpg)
 
 When it comes to awning control, there are two dominant challenges ---
@@ -90,7 +90,7 @@ The protection logic combines two independent mechanisms:
 
 The hard limit handles dangerous wind immediately:
 
-``` cpp
+```cpp
 const int RPMlimit = 300;  // example value
 
 if (RPM >= RPMlimit)
@@ -101,7 +101,7 @@ if (RPM >= RPMlimit)
 
 The integrator handles sustained elevated wind:
 
-``` cpp
+```cpp
 const int RPMIntegralThreshold = 250;  // example value
 const int WindIntegralLimit = 100;     // example value
 const int WindIntegralMaximum = 1000;  // saturation limit
@@ -136,7 +136,7 @@ wind continues for a long time.
 
 With one-second sampling, every sample contributes
 
-``` text
+```text
 RPM - RPMIntegralThreshold
 ```
 
@@ -178,7 +178,7 @@ structure.
 
 Consider:
 
-``` cpp
+```cpp
 const int RPMIntegralThreshold = 250;
 const int RPMlimit = 300;
 const int WindIntegralLimit = 100;
@@ -186,13 +186,13 @@ const int WindIntegralLimit = 100;
 
 Assuming a constant value and one-second sampling:
 
-    Wind value    Approximate reaction
------------- -----------------------
-       251 RPM   retract after \~100 s
-       260 RPM    retract after \~10 s
-       275 RPM     retract after \~4 s
-       299 RPM     retract after \~3 s
-       300 RPM     retract immediately
+| Wind value | Approximate reaction |
+|---:|---:|
+| 251 RPM | retract after ~100 s |
+| 260 RPM | retract after ~10 s |
+| 275 RPM | retract after ~4 s |
+| 299 RPM | retract after ~3 s |
+| 300 RPM | retract immediately |
 
 Instead of making a binary decision at one threshold, the system
 automatically becomes increasingly intolerant as wind approaches the
@@ -207,7 +207,7 @@ sets](images/wind-protection-characteristic-curves.png)
 For constant wind values between the continuous-load threshold and the
 hard limit, the approximate retract time is:
 
-\[ t = `\frac{WindIntegralLimit}{RPM - RPMIntegralThreshold}`{=tex} \]
+$$t = \frac{WindIntegralLimit}{RPM - RPMIntegralThreshold}$$
 
 This hyperbolic relationship is one of the most useful properties of the
 approach.
@@ -250,12 +250,11 @@ Let:
 
 Then:
 
-\[ WindIntegralLimit = T
-`\cdot `{=tex}`\frac{RPMlimit - RPMIntegralThreshold}{2}`{=tex} \]
+$$WindIntegralLimit = T \cdot \frac{RPMlimit - RPMIntegralThreshold}{2}$$
 
 For example:
 
-``` cpp
+```cpp
 RPMIntegralThreshold = 250;
 RPMlimit = 300;
 ```
@@ -263,8 +262,7 @@ RPMlimit = 300;
 If the midpoint is therefore 275 RPM and this condition should be
 tolerated for 10 seconds:
 
-\[ WindIntegralLimit = 10 `\cdot `{=tex}`\frac{300 - 250}{2}`{=tex} =
-250 \]
+$$WindIntegralLimit = 10 \cdot \frac{300 - 250}{2} = 250$$
 
 This makes tuning much easier to reason about than choosing an arbitrary
 averaging window.
@@ -372,7 +370,7 @@ load for the purposes of this protection logic.
 
 The accumulator therefore operates on the difference
 
-``` text
+```text
 RPM - RPMIntegralThreshold
 ```
 
@@ -400,7 +398,7 @@ and above the continuous-load threshold.
 
 For example:
 
-``` text
+```text
 245 RPM
 260 RPM
 245 RPM
@@ -418,8 +416,8 @@ persistently gusty.
 Whether this is desirable depends on the installation.
 
 In my environment this has not been a significant practical problem. In
-locations with different wind patterns --- coastal conditions are an
-obvious example --- the thresholds may need to be chosen more
+locations with different wind patterns — coastal conditions are an
+obvious example — the thresholds may need to be chosen more
 conservatively, or the recovery behavior may need to be modified.
 
 This is an important reminder that the algorithm provides a **tunable
@@ -435,7 +433,7 @@ model.
 Wind pressure is proportional to approximately the **square of wind
 velocity**:
 
-\[ p `\propto `{=tex}v\^2 \]
+$$p \propto v^2$$
 
 A cup-anemometer RPM value is therefore not directly proportional to the
 mechanical load on an awning.
@@ -447,10 +445,10 @@ empirical behavior and practical testing.
 At the same time, the resulting retract-time characteristic is already
 strongly nonlinear:
 
-\[ t = `\frac{WindIntegralLimit}{RPM - RPMIntegralThreshold}`{=tex} \]
+$$t = \frac{WindIntegralLimit}{RPM - RPMIntegralThreshold}$$
 
 A parabola and a hyperbola are clearly not the same thing, so this must
-not be presented as a substitute for a physically correct (v\^2) model.
+not be presented as a substitute for a physically correct $v^2$ model.
 
 But both characteristics point in the same useful practical direction:
 
@@ -590,7 +588,7 @@ other than awnings.
 
 ------------------------------------------------------------------------
 
-## What the Algorithm Is --- and What It Is Not
+## What the Algorithm Is — and What It Is Not
 
 The approach can be summarized as:
 
@@ -625,7 +623,7 @@ controller.
 
 Putting the essential parts together:
 
-``` cpp
+```cpp
 const int RPMIntegralThreshold = 250;  // example only
 const int RPMlimit = 300;              // example only
 
@@ -696,7 +694,7 @@ not have to wait for an integral.
 
 The subsequent Arduino Forum discussion was particularly valuable in
 clarifying the relationship to leaky integration, the difference between
-an empirical protection model and a physical (v\^2) load model, startup
+an empirical protection model and a physical $v^2$ load model, startup
 and sensor-failure behavior, and several application-dependent edge
 cases. Those contributions have been incorporated into this consolidated
 version rather than presented as ideas originating solely from the
