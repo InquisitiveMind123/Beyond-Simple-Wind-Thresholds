@@ -704,6 +704,16 @@ The result remains intentionally simple: a few integer operations, three
 intuitive tuning parameters, and a protection characteristic that has
 proved practical in real operation.
 
+------------------------------------------------------------------------
+
+## Related Article
+
+The corresponding sunlight-control approach uses asymmetric memory to tolerate short cloud passages without unnecessary awning movement:
+
+**[Beyond Simple Light Thresholds: A Practical Anti-Cloud-Flutter Logic for Awning Control](https://github.com/InquisitiveMind123/Beyond-Simple-Light-Thresholds)**
+
+---
+
 > **Safety note:** An awning can cause property damage or injury if wind
 > protection fails. The values shown here are examples from one
 > experimental implementation and are not certified safety limits. Any
