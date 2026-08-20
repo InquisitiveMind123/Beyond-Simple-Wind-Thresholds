@@ -3,7 +3,7 @@
 ![Beyond Simple Wind Thresholds — awning and
 anemometer](images/wind-protection-awning.jpg)
 
-When it comes to awning control, there are two dominant challenges ---
+When it comes to awning control, there are two dominant challenges —
 quantities that can change quickly while also being highly relevant:
 
 **wind and sunlight.**
